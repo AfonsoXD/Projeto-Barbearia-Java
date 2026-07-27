@@ -1,0 +1,19 @@
+# Compilados do Java
+*.class
+
+# Pastas de saída de IDEs
+bin/
+out/
+target/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
