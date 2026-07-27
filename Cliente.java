@@ -1,50 +1,40 @@
 public class Cliente {
-    private int id;
-    private String nome;
-    private String telefone;
-    private String email;
+	private String nome;
+	private String telefone;
+	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public Cliente(int id, String nome, String telefone, String email) {
-        this.id = id;
-        this.nome = nome;
-        this.telefone = telefone;
-        this.email = email;
-    }
 
-    public int getId() {
-        return id;
-    }
+	
+	
+public Cliente(String nome,String telefone) {
+this.nome = nome;
+this.telefone = telefone;
+}
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getNome() {
-        return nome;
-    }
+public String getNome() {
+	return nome;
+}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+public  void exibirDados() {
+	System.out.println("Nome: "+ nome);
+	System.out.println("Telefone:"+ telefone);
+}
 
-    public String getTelefone() {
-        return telefone;
-    }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+public String getTelefone() {
+	return telefone;
+}
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+public void setTelefone(String telefone) {
+	this.telefone = telefone;
+}
 
-    @Override
-    public String toString() {
-        return "ID: " + id + " | Nome: " + nome + " | Telefone: " + telefone + " | E-mail: " + email;
-    }
+
+
+
 }

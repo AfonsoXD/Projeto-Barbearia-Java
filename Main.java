@@ -1,312 +1,389 @@
-import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Main {
-    private static ArrayList<Cliente> clientes = new ArrayList<>();
-    private static ArrayList<Agendamento> agendamentos = new ArrayList<>();
-    private static int contadorClienteId = 1;
-    private static int contadorAgendamentoId = 1;
-    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
+        Scanner sc = new Scanner(System.in);
+
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        ArrayList<Agendamento> agendamentos = new ArrayList<>();
+
         int opcao = -1;
+
         while (opcao != 0) {
-            exibirMenu();
-            try {
-                opcao = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Opção inválida! Digite um número.");
-                continue;
-            }
 
-            switch (opcao) {
-                case 1 -> cadastrarCliente();
-                case 2 -> listarClientes();
-                case 3 -> buscarCliente();
-                case 4 -> editarCliente();
-                case 5 -> removerCliente();
-                case 6 -> cadastrarAgendamento();
-                case 7 -> listarAgendamentos();
-                case 8 -> buscarAgendamento();
-                case 9 -> editarAgendamento();
-                case 10 -> cancelarAgendamento();
-                case 0 -> System.out.println("Saindo do sistema... Até logo!");
-                default -> System.out.println("Opção inválida! Tente novamente.");
-            }
-            System.out.println();
-        }
-    }
+            System.out.println("=========== BARBEARIA ===========");
+            System.out.println("1 - Cadastrar cliente");
+            System.out.println("2 - Agendar serviço");
+            System.out.println("3 - Listar Clientes");
+            System.out.println("4 - Listar agendamentos");
+            System.out.println("5 - Cancelar agendamento");
+            System.out.println("6 - Remover cliente");
+            System.out.println("7 - Editar cliente");
+            System.out.println("8 - Editar agendamento");
+            System.out.println("9 - Buscar cliente");
+            System.out.println("10 - Buscar agendamento por cliente");
+            System.out.println("0 - Sair");
 
-    private static void exibirMenu() {
-        System.out.println("========= SISTEMA DE BARBEARIA =========");
-        System.out.println("--- GESTÃO DE CLIENTES ---");
-        System.out.println("1. Cadastrar Cliente");
-        System.out.println("2. Listar Clientes");
-        System.out.println("3. Buscar Cliente");
-        System.out.println("4. Editar Cliente");
-        System.out.println("5. Remover Cliente");
-        System.out.println("--- GESTÃO DE AGENDAMENTOS ---");
-        System.out.println("6. Cadastrar Agendamento");
-        System.out.println("7. Listar Agendamentos");
-        System.out.println("8. Buscar Agendamento");
-        System.out.println("9. Editar Agendamento");
-        System.out.println("10. Cancelar Agendamento");
-        System.out.println("0. Sair");
-        System.out.print("Escolha uma opção: ");
-    }
+            System.out.print("Escolha uma opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
 
-    // --- CLIENTE CRUD ---
+            switch(opcao) {
 
-    private static void cadastrarCliente() {
-        System.out.println("\n--- Cadastrar Cliente ---");
-        System.out.print("Nome: ");
-        String nome = scanner.nextLine();
-        System.out.print("Telefone: ");
-        String telefone = scanner.nextLine();
-        System.out.print("E-mail: ");
-        String email = scanner.nextLine();
+                case 1:
 
-        Cliente novoCliente = new Cliente(contadorClienteId++, nome, telefone, email);
-        clientes.add(novoCliente);
-        System.out.println("Cliente cadastrado com sucesso! ID: " + novoCliente.getId());
-    }
+                    System.out.println("Cadastrar Cliente");
 
-    private static void listarClientes() {
-        System.out.println("\n--- Lista de Clientes ---");
-        if (clientes.isEmpty()) {
-            System.out.println("Nenhum cliente cadastrado.");
-            return;
-        }
-        for (Cliente c : clientes) {
-            System.out.println(c);
-        }
-    }
+                    System.out.print("Digite seu nome: ");
+                    String nome = sc.nextLine();
 
-    private static void buscarCliente() {
-        System.out.println("\n--- Buscar Cliente ---");
-        System.out.print("Digite o ID ou o Nome do cliente: ");
-        String busca = scanner.nextLine();
+                    System.out.print("Digite seu telefone: ");
+                    String telefone = sc.nextLine();
 
-        boolean encontrado = false;
-        for (Cliente c : clientes) {
-            if (String.valueOf(c.getId()).equals(busca) || c.getNome().equalsIgnoreCase(busca)) {
-                System.out.println(c);
-                encontrado = true;
-            }
-        }
-        if (!encontrado) {
-            System.out.println("Nenhum cliente encontrado com os dados informados.");
-        }
-    }
+                    Cliente cliente = new Cliente(nome, telefone);
+                    clientes.add(cliente);
 
-    private static void editarCliente() {
-        System.out.println("\n--- Editar Cliente ---");
-        System.out.print("Digite o ID do cliente a editar: ");
-        int id = lerInt();
-        Cliente c = encontrarClientePorId(id);
+                    System.out.println("Cliente cadastrado com sucesso!");
+                    break;
 
-        if (c == null) {
-            System.out.println("Cliente não encontrado.");
-            return;
-        }
+                case 2:
+                	System.out.println("Agendar serviço");
+                	
+                	if(clientes.size()==0){
+                	   System.out.println("Nenhum cliente cadastrado");
+                	   break;
+                   }
+ 
+                   for(int i=0; i< clientes.size(); i++){
+                   	System.out.println((i+1) + "-" + clientes.get(i).getNome());                  
+       
+                    }
+                   System.out.println("Escolha o cliente");
+                   int escolha = sc.nextInt();
+                   sc.nextLine();
 
-        System.out.print("Novo Nome (" + c.getNome() + "): ");
-        String novoNome = scanner.nextLine();
-        if (!novoNome.isBlank()) c.setNome(novoNome);
+                   if (escolha < 1 || escolha > clientes.size()) {
+                       System.out.println("Cliente inválido.");
+                       break;
+                   }
 
-        System.out.print("Novo Telefone (" + c.getTelefone() + "): ");
-        String novoTelefone = scanner.nextLine();
-        if (!novoTelefone.isBlank()) c.setTelefone(novoTelefone);
+                   Cliente clienteEscolhido = clientes.get(escolha - 1);
+     
+                   System.out.println("Digite a data: ");
+                   String data = sc.nextLine();
+           
+                   System.out.println("Digite o horário: ");
+                   String horario = sc.nextLine();
+                   
+                   System.out.println("Digite o serviço: ");
+                   String servico = sc.nextLine();
+                   
+                   boolean horarioOcupado = false;
 
-        System.out.print("Novo E-mail (" + c.getEmail() + "): ");
-        String novoEmail = scanner.nextLine();
-        if (!novoEmail.isBlank()) c.setEmail(novoEmail);
+                   for (int i = 0; i < agendamentos.size(); i++) {
 
-        System.out.println("Cliente atualizado com sucesso!");
-    }
+                       Agendamento a = agendamentos.get(i);
 
-    private static void removerCliente() {
-        System.out.println("\n--- Remover Cliente ---");
-        System.out.print("Digite o ID do cliente a remover: ");
-        int id = lerInt();
-        Cliente c = encontrarClientePorId(id);
+                       if (a.getData().equalsIgnoreCase(data)
+                               && a.getHorario().equalsIgnoreCase(horario)) {
 
-        if (c == null) {
-            System.out.println("Cliente não encontrado.");
-            return;
-        }
+                           horarioOcupado = true;
+                           break;
+                       }
+                   }
 
-        // Validação: Impedir remover cliente com agendamentos ativos
-        for (Agendamento a : agendamentos) {
-            if (a.getCliente().getId() == id && a.getStatus().equalsIgnoreCase("Ativo")) {
-                System.out.println("ERRO: Não é possível remover o cliente pois ele possui agendamentos ativos!");
-                return;
-            }
-        }
+                   if (horarioOcupado) {
+                       System.out.println("Já existe um agendamento para esse horário.");
+                       break;
+                   }
+                   Agendamento agendamento = new Agendamento(
+                		   clienteEscolhido,
+                		   data,
+                		   horario,
+                		   servico  );  		
+                  
+                   agendamentos.add(agendamento);
+                   System.out.println("Agendamento realizado com sucesso");
+                   
+                    
+                  break;
 
-        clientes.remove(c);
-        System.out.println("Cliente removido com sucesso!");
-    }
+                case 3:
+                    System.out.println("Listar Clientes");
 
-    // --- AGENDAMENTO CRUD ---
+                    for (int i = 0; i < clientes.size(); i++) {
+                        Cliente c = clientes.get(i);
+                        c.exibirDados();
+                        System.out.println("-----------");
+                    }
 
-    private static void cadastrarAgendamento() {
-        System.out.println("\n--- Cadastrar Agendamento ---");
-        if (clientes.isEmpty()) {
-            System.out.println("Nenhum cliente cadastrado. Cadastre um cliente primeiro.");
-            return;
-        }
+                    break;
 
-        System.out.print("Digite o ID do cliente: ");
-        int idCliente = lerInt();
-        Cliente cliente = encontrarClientePorId(idCliente);
+                case 4:
+                    System.out.println("Listar agendamentos");
+                    
+                  if(agendamentos.size() == 0) {
+                	  System.out.println("Nenhum agendamento cadastrado");
+                	 break;
+                  }  
+                    for(int i =0; i<agendamentos.size();i++) {
+                    	Agendamento a = agendamentos.get(i);
+                    	a.exibirAgendamento();
+                    	System.out.println("-----------------");
+                    }
+                  
+                  break;
+                  
+                case 5:
+                	System.out.println("Cancelar agendamento");
+                	
+                	if(agendamentos.size()==0) {
+                	System.out.println("Nenhum agendamento");
+                	break;
+                	}
+ 
+                	for(int i=0; i <agendamentos.size(); i++) {
+                		System.out.println((i+ 1)+ "-");
+                		
+                		Agendamento b = agendamentos.get(i);
+                		b.exibirAgendamento();
+                	}
+                	System.out.println("Qual agendamento deseja cancelar?");
+                	int c = sc.nextInt();
+                	
+                	if (c >= 1 && c <= agendamentos.size()) {
+                	    agendamentos.remove(c - 1);
+                	    System.out.println("Agendamento cancelado com sucesso!");
+                	} else {
+                	    System.out.println("Opção inválida!");
+                	}
+                	
+                	break;
+                	
+                case 6:
+                    System.out.println("Remover cliente");
 
-        if (cliente == null) {
-            System.out.println("Cliente não encontrado.");
-            return;
-        }
+                    if (clientes.size() == 0) {
+                        System.out.println("Nenhum cliente cadastrado.");
+                        break;
+                    }
 
-        System.out.print("Data e Hora (ex: 28/07/2026 14:00): ");
-        String dataHora = scanner.nextLine();
+                    // Lista os clientes
+                    for (int i = 0; i < clientes.size(); i++) {
+                        System.out.println((i + 1) + " - " + clientes.get(i).getNome());
+                    }
 
-        // Validação: Impedir horários duplicados
-        for (Agendamento a : agendamentos) {
-            if (a.getDataHora().equalsIgnoreCase(dataHora) && a.getStatus().equalsIgnoreCase("Ativo")) {
-                System.out.println("ERRO: Já existe um agendamento ativo para esse horário (" + dataHora + ")!");
-                return;
-            }
-        }
+                    System.out.print("Qual cliente deseja remover? ");
+                    int remove = sc.nextInt();
+                    sc.nextLine();
 
-        System.out.print("Serviço (ex: Cabelo, Barba, Completo): ");
-        String servico = scanner.nextLine();
+                    if (remove < 1 || remove > clientes.size()) {
+                        System.out.println("Cliente inválido.");
+                        break;
+                    }
 
-        System.out.print("Valor (R$): ");
-        double valor = lerDouble();
+                    Cliente clienteEscolhido1 = clientes.get(remove - 1);
 
-        Agendamento novoAgendamento = new Agendamento(contadorAgendamentoId++, cliente, servico, dataHora, valor);
-        agendamentos.add(novoAgendamento);
-        System.out.println("Agendamento realizado com sucesso! ID: " + novoAgendamento.getId());
-    }
+                    boolean possuiAgendamento = false;
 
-    private static void listarAgendamentos() {
-        System.out.println("\n--- Lista de Agendamentos ---");
-        if (agendamentos.isEmpty()) {
-            System.out.println("Nenhum agendamento cadastrado.");
-            return;
-        }
-        for (Agendamento a : agendamentos) {
-            System.out.println(a);
-        }
-    }
+                    // Verifica se o cliente possui algum agendamento
+                    for (int i = 0; i < agendamentos.size(); i++) {
 
-    private static void buscarAgendamento() {
-        System.out.println("\n--- Buscar Agendamento ---");
-        System.out.print("Digite o ID do agendamento ou nome do cliente: ");
-        String busca = scanner.nextLine();
+                        Agendamento agendamento1 = agendamentos.get(i);
 
-        boolean encontrado = false;
-        for (Agendamento a : agendamentos) {
-            if (String.valueOf(a.getId()).equals(busca) ||
-               (a.getCliente() != null && a.getCliente().getNome().equalsIgnoreCase(busca))) {
-                System.out.println(a);
-                encontrado = true;
-            }
-        }
-        if (!encontrado) {
-            System.out.println("Nenhum agendamento encontrado com os critérios fornecidos.");
-        }
-    }
+                        if (agendamento1.getCliente() == clienteEscolhido1) {
+                            possuiAgendamento = true;
+                            break;
+                        }
+                    }
 
-    private static void editarAgendamento() {
-        System.out.println("\n--- Editar Agendamento ---");
-        System.out.print("Digite o ID do agendamento a editar: ");
-        int id = lerInt();
-        Agendamento a = encontrarAgendamentoPorId(id);
+                    if (possuiAgendamento) {
+                        System.out.println("Este cliente possui um agendamento e não pode ser removido.");
+                    } else {
+                        clientes.remove(remove - 1);
+                        System.out.println("Cliente removido com sucesso!");
+                    }
 
-        if (a == null) {
-            System.out.println("Agendamento não encontrado.");
-            return;
-        }
+                    break;
+                 
+                case 7:
+            
 
-        System.out.print("Nova Data/Hora (" + a.getDataHora() + "): ");
-        String novaDataHora = scanner.nextLine();
-        if (!novaDataHora.isBlank()) {
-            // Validação de choque de horário na edição
-            for (Agendamento ag : agendamentos) {
-                if (ag.getId() != id && ag.getDataHora().equalsIgnoreCase(novaDataHora) && ag.getStatus().equalsIgnoreCase("Ativo")) {
-                    System.out.println("ERRO: Já existe outro agendamento ativo para esse horário!");
-                    return;
+                    System.out.println("Editar cliente");
+
+                    if (clientes.size() == 0) {
+                        System.out.println("Nenhum cliente cadastrado.");
+                        break;
+                    }
+
+                    for (int i = 0; i < clientes.size(); i++) {
+                        System.out.println((i + 1) + " - " + clientes.get(i).getNome());
+                    }
+
+                    System.out.print("Escolha o cliente: ");
+                    int editar = sc.nextInt();
+                    sc.nextLine();
+
+                    if (editar < 1 || editar > clientes.size()) {
+                        System.out.println("Cliente inválido.");
+                        break;
+                    }
+
+                    Cliente clienteEditar = clientes.get(editar - 1);
+
+                    System.out.print("Novo nome: ");
+                    String novoNome = sc.nextLine();
+
+                    System.out.print("Novo telefone: ");
+                    String novoTelefone = sc.nextLine();
+
+                    clienteEditar.setNome(novoNome);
+                    clienteEditar.setTelefone(novoTelefone);
+
+                    System.out.println("Cliente atualizado com sucesso!");
+
+                    break;
+                	
+                case 8:
+                    
+                	System.out.println("Editar agendamento");
+                	
+                	if(agendamentos.size()== 0) {
+                		System.out.println("Nenhum agendamento cadastrado.");
+                		break;
+                	}
+                for(int i=0; i< agendamentos.size(); i++) {
+                	System.out.println((i+1)+ "-"+ agendamentos.get(i).getCliente().getNome());
                 }
+                	System.out.println("Escolha o agendamento :");
+                	int editarAgendamento = sc.nextInt();
+                	sc.nextLine();
+                	
+                if(editarAgendamento< 1 || editarAgendamento > agendamentos.size()) {
+                	System.out.println("Agendamento invalido");
+                	break;
+                }	
+                
+                Agendamento agendamentoEditar = agendamentos.get(editarAgendamento -1);
+                
+                
+                System.out.println("Nova data :");
+                String novaData = sc.nextLine();
+                
+                System.out.println("Novo horário:");
+                String novoHorario = sc.nextLine();
+                
+                boolean horarioOcupado1 = false;
+
+                for (int i = 0; i < agendamentos.size(); i++) {
+
+                    Agendamento a = agendamentos.get(i);
+
+                    // Ignora o próprio agendamento que está sendo editado
+                    if (a != agendamentoEditar &&
+                        a.getData().equalsIgnoreCase(novaData) &&
+                        a.getHorario().equalsIgnoreCase(novoHorario)) {
+
+                        horarioOcupado1 = true;
+                        break;
+                    }
+                }
+
+                if (horarioOcupado1) {
+                    System.out.println("Já existe um agendamento nesse horário.");
+                    break;
+                }
+                System.out.println("Novo serviço");
+                String novoServico = sc.nextLine();
+                
+                agendamentoEditar.setData(novaData);
+                agendamentoEditar.setHorario(novoHorario);
+                agendamentoEditar.setServico(novoServico);
+                
+                System.out.println("Agendamento atualizado com sucesso!");
+                
+                break;
+  
+                case 9:
+
+                    System.out.println("Buscar cliente");
+
+                    if (clientes.size() == 0) {
+                        System.out.println("Nenhum cliente cadastrado.");
+                        break;
+                    }
+
+                    System.out.print("Digite o nome do cliente: ");
+                    String nomeBusca = sc.nextLine();
+
+                    boolean encontrado = false;
+
+                    for (int i = 0; i < clientes.size(); i++) {
+
+                        Cliente clienteBusca = clientes.get(i);
+
+                        if (clienteBusca.getNome().equalsIgnoreCase(nomeBusca)) {
+
+                            clienteBusca.exibirDados();
+                            encontrado = true;
+                            break;
+                        }
+                    }
+
+                    if (!encontrado) {
+                        System.out.println("Cliente não encontrado.");
+                    }
+
+                    break;
+                    
+                case 10:
+
+                    System.out.println("Buscar agendamento por cliente");
+
+                    if (agendamentos.size() == 0) {
+                        System.out.println("Nenhum agendamento cadastrado.");
+                        break;
+                    }
+
+                    System.out.print("Digite o nome do cliente: ");
+                    String nomeCliente = sc.nextLine();
+
+                    boolean encontrou = false;
+
+                    for (int i = 0; i < agendamentos.size(); i++) {
+
+                        Agendamento agendamentoBusca = agendamentos.get(i);
+
+                        if (agendamentoBusca.getCliente().getNome().equalsIgnoreCase(nomeCliente)) {
+
+                            agendamentoBusca.exibirAgendamento();
+                            System.out.println("----------------------");
+                            encontrou = true;
+                        }
+                    }
+
+                    if (!encontrou) {
+                        System.out.println("Nenhum agendamento encontrado para esse cliente.");
+                    }
+
+                    break;
+                    
+                case 0:
+                    System.out.println("Saindo...");
+                    break;
+                    
+                  
+                    
+                default:
+                    System.out.println("Opção inválida!");
             }
-            a.setDataHora(novaDataHora);
         }
 
-        System.out.print("Novo Serviço (" + a.getServico() + "): ");
-        String novoServico = scanner.nextLine();
-        if (!novoServico.isBlank()) a.setServico(novoServico);
-
-        System.out.print("Novo Valor (" + a.getValor() + "): ");
-        String valStr = scanner.nextLine();
-        if (!valStr.isBlank()) {
-            try {
-                a.setValor(Double.parseDouble(valStr));
-            } catch (NumberFormatException e) {
-                System.out.println("Valor inválido. Mantido valor anterior.");
-            }
-        }
-
-        System.out.println("Agendamento atualizado com sucesso!");
-    }
-
-    private static void cancelarAgendamento() {
-        System.out.println("\n--- Cancelar Agendamento ---");
-        System.out.print("Digite o ID do agendamento a cancelar: ");
-        int id = lerInt();
-        Agendamento a = encontrarAgendamentoPorId(id);
-
-        if (a == null) {
-            System.out.println("Agendamento não encontrado.");
-            return;
-        }
-
-        if (a.getStatus().equalsIgnoreCase("Cancelado")) {
-            System.out.println("Este agendamento já se encontra cancelado.");
-            return;
-        }
-
-        a.setStatus("Cancelado");
-        System.out.println("Agendamento cancelado com sucesso!");
-    }
-
-    // --- MÉTODOS AUXILIARES ---
-
-    private static Cliente encontrarClientePorId(int id) {
-        for (Cliente c : clientes) {
-            if (c.getId() == id) return c;
-        }
-        return null;
-    }
-
-    private static Agendamento encontrarAgendamentoPorId(int id) {
-        for (Agendamento a : agendamentos) {
-            if (a.getId() == id) return a;
-        }
-        return null;
-    }
-
-    private static int lerInt() {
-        try {
-            return Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            return -1;
-        }
-    }
-
-    private static double lerDouble() {
-        try {
-            return Double.parseDouble(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            return 0.0;
-        }
+        sc.close();
     }
 }

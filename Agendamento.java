@@ -1,75 +1,47 @@
 public class Agendamento {
-    private int id;
-    private Cliente cliente;
-    private String servico;
-    private String dataHora;
-    private double valor;
-    private String status; // Ex: "Ativo", "Cancelado"
 
-    public Agendamento(int id, Cliente cliente, String servico, String dataHora, double valor) {
-        this.id = id;
-        this.cliente = cliente;
-        this.servico = servico;
-        this.dataHora = dataHora;
-        this.valor = valor;
-        this.status = "Ativo";
-    }
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	public String getData() {
+		return data;
+	}
+	public void setData(String data) {
+		this.data = data;
+	}
+	public String getHorario() {
+		return horario;
+	}
+	public void setHorario(String horario) {
+		this.horario = horario;
+	}
+	public String getServico() {
+		return servico;
+	}
+	public void setServico(String servico) {
+		this.servico = servico;
+	}
+	private  Cliente cliente;
+	private String data;
+	private String horario;
+	private String servico;
 
-    public int getId() {
-        return id;
-    }
+public Agendamento(Cliente cliente,String data,String horario,String servico) {
+	this.cliente = cliente;
+	this.data = data;
+	this.horario = horario;
+	this.servico = servico;
+}
+public void exibirAgendamento() {
+	System.out.println("Cliente :" + cliente.getNome());
+	System.out.println("Telefone :" + cliente.getTelefone());
+	System.out.println("Data : " + this.data);
+	System.out.println("Horario :" + this.horario);
+	System.out.println("Serviço:" + this.servico);
+	
+}
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public String getServico() {
-        return servico;
-    }
-
-    public void setServico(String servico) {
-        this.servico = servico;
-    }
-
-    public String getDataHora() {
-        return dataHora;
-    }
-
-    public void setDataHora(String dataHora) {
-        this.dataHora = dataHora;
-    }
-
-    public double getValor() {
-        return valor;
-    }
-
-    public void setValor(double valor) {
-        this.valor = valor;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "ID Agendamento: " + id +
-               " | Cliente: " + (cliente != null ? cliente.getNome() : "N/A") +
-               " | Serviço: " + servico +
-               " | Data/Hora: " + dataHora +
-               " | Valor: R$ " + String.format("%.2f", valor) +
-               " | Status: " + status;
-    }
 }
